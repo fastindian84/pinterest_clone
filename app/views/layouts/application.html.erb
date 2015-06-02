@@ -19,7 +19,7 @@
             </li>
             <li>
               <%= link_to edit_user_registration_path do %>
-                <%= image_tag gravatar_url(current_user), class: "img-circle" %>
+                <%= image_tag avatar_url(current_user, style: :navbar), class: "img-circle" %>
                 <%= current_user.email %>
               <% end %>
             </li>

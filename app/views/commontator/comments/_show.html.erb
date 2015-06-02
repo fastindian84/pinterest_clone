@@ -12,7 +12,7 @@
 <div id="comment_<%= comment.id.to_s %>_div" class="comment">
   <div id="comment_<%= comment.id.to_s %>_middle_div" class="comment_div">
     <span id="comment_<%= comment.id.to_s %>_avatar_span" class="comment_avatar">
-      <%= image_tag gravatar_url(creator, 48), class: "img-circle" %>
+      <%= image_tag avatar_url(creator, style: :comment, size: 48), class: "img-circle" %>
     </span>
     <span id="comment_<%= comment.id.to_s %>_commontator_span" class="comment_commontator">
       <%= creator.email %>

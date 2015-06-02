@@ -1,6 +1,12 @@
 module ApplicationHelper
-  def gravatar_url(user, size = 32)
-    gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
+  def avatar_url(user, options = { })
+    style = options[:style] || :comment
+    size  = options[:size]  || 32
+    if user.avatar.present?
+      user.avatar.url(style)
+    else
+      gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
+      "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
+    end
   end
 end
