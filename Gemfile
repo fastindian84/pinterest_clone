@@ -25,6 +25,7 @@ gem 'spring',        group: :development
 group :development, :test do
      gem 'sqlite3'
      gem "thin"
+     gem "pry"
 end
 
 group :production do

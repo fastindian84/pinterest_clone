@@ -15,10 +15,19 @@ class PinsController < ApplicationController
 	end
 
 	def create
-		@pin = current_user.pins.build(pin_params)
-
-		if @pin.save
-			redirect_to @pin, notice: "Pin was successfully created"
+		pins = []
+		if params[:images].present?
+			params[:images].each do |image|
+				pin = current_user.pins.build(pin_params.merge(image: image))
+				pins << pin
+			end
+		end
+		if pins.map(&:save).all?
+			if pins.count == 1
+				redirect_to pins.first, notice: "Pin was successfully created"
+			else
+				redirect_to action: :index
+			end
 		else
 			render 'new'
 		end
@@ -48,7 +57,7 @@ class PinsController < ApplicationController
 	private
 
 	def pin_params
-		params.require(:pin).permit(:title, :description, :image, :price)
+		params.require(:pin).permit(:title, :description, :price)
 	end
 
 	def find_pin
