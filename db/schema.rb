@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602075243) do
+ActiveRecord::Schema.define(version: 20150606194512) do
 
   create_table "commontator_comments", force: true do |t|
     t.string   "creator_type"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20150602075243) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.integer  "price",              default: 0
+    t.string   "currency",           default: "JPY"
   end
 
   add_index "pins", ["user_id"], name: "index_pins_on_user_id"
@@ -86,6 +88,7 @@ ActiveRecord::Schema.define(version: 20150602075243) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string   "name",                   default: ""
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

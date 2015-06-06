@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.2.1'
 
 gem 'rails', '4.1.5'
 gem 'sass-rails', '~> 4.0.3'
@@ -24,6 +24,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 group :development, :test do
      gem 'sqlite3'
+     gem "thin"
 end
 
 group :production do

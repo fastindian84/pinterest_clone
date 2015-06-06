@@ -10,7 +10,7 @@
             <span class="glyphicon glyphicon-heart"></span>
             <%= @pin.get_upvotes.size %>
           <% end %>
-          <% if user_signed_in? %>
+          <% if @pin.user == current_user %>
             <%= link_to "Edit", edit_pin_path, class: "btn btn-default" %>
             <%= link_to "Delete", pin_path, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default" %>
           <% end %>
@@ -21,10 +21,13 @@
         <p class="description">
           <%= @pin.description %>
         </p>
+				<p class="description">
+					Price: <%= @pin.price %>¥
+				</p>
         <hr>
         <p class="user">
           Submitted by
-          <%= @pin.user.email %>
+          <%= @pin.user.name %>
         </p>
         <div class="comments">
           <%= commontator_thread(@pin) %>
