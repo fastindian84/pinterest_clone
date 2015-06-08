@@ -15,23 +15,27 @@
     </div>
   <% end %>
   <div class="form-group">
-		<span class="btn btn-success fileinput-button">
+    <span class="btn btn-success fileinput-button">
         <i class="glyphicon glyphicon-plus"></i>
         <span>Add files...</span>
-				<%= f.input :image, label: false, input_html: {type: :file,  name: 'images[]', class: 'form-control', multiple: true, id: "images_upload" } %>
-    </span>
-
-		<h4>Images</h4>
-		<div id="images"></div>
+        <%= f.input :image, label: false, input_html: {type: :file,
+                                                       name: 'image',
+                                                       class: 'form-control file_input',
+                                                       multiple: current_page?(action: 'new'),
+                                                       id: "#{'images_upload' if current_page?(action: 'new')}" } %>
+      </span>
+    <h4>Preview</h4>
+    <div id="images"></div>
   </div>
+
   <div class="form-group">
     <%= f.input :title, input_html: { class: 'form-control' } %>
   </div>
   <div class="form-group">
     <%= f.input :description, input_html: { class: 'form-control' } %>
   </div>
-	<div class="form-group">
+  <div class="form-group">
     <%= f.input :price, input_html: { class: 'form-control' } %>
   </div>
-  <%= f.button :submit, class: "btn btn-primary" %>
+  <%= f.button :submit, class: "btn btn-primary", id: "#{'submit_pin' if current_page?(action: 'new')}"  %>
 <% end %>

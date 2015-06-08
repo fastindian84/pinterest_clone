@@ -9,6 +9,7 @@ $(document).on "ready page:load", ->
       isFitWidth: true
 
   file_upload = $('#images_upload')
+  forms = []
   file_upload.fileupload
     url: '/pins'
     autoUpload: false
@@ -20,8 +21,9 @@ $(document).on "ready page:load", ->
     previewMaxWidth: 100
     previewMaxHeight: 100
     add: (e, data) ->
+      forms.push(data)
 
-      data.context = $('<div/>').appendTo('#images');
+      context = $('<div/>').appendTo('#images');
       file = data.files[0]
 
       reader = new FileReader()
@@ -33,10 +35,25 @@ $(document).on "ready page:load", ->
         img.style.width  = "60px"
         img.style.margin = "5px"
         img.style.borderRadius = "2px"
+        removeBtn = document.createElement("i")
+        removeBtn.file = data
+        removeBtn.className = "glyphicon glyphicon-remove"
+        removeBtn.style.margin = "10px"
+        removeBtn.onclick = ->
+          index = forms.indexOf(@file)
+          forms.splice(index, 1)
+          @parentElement.outerHTML = ""
         span = $('<span/>')
         span.text(file.name)
-        data.context.append(span)
-        data.context.prepend(img)
+        context.append(span)
+        context.prepend(img)
+        context.append(removeBtn)
 
+
+  $("#submit_pin").click ->
+    promises = forms.map (form)-> form.submit()
+    $.when.apply($, promises).then ->
+      window.location.href = "/"
+    false
 
 
