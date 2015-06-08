@@ -14,5 +14,10 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require masonry/jquery.masonry
+//= require jquery-fileupload/basic-plus
+
+
+
+//= require underscore
 //= require turbolinks
 //= require_tree .

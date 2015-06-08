@@ -15,7 +15,14 @@
     </div>
   <% end %>
   <div class="form-group">
-		<%= file_field_tag "images[]", type: :file, multiple: true %>
+		<span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Add files...</span>
+				<%= f.input :image, label: false, input_html: {type: :file,  name: 'images[]', class: 'form-control', multiple: true, id: "images_upload" } %>
+    </span>
+
+		<h4>Images</h4>
+		<div id="images"></div>
   </div>
   <div class="form-group">
     <%= f.input :title, input_html: { class: 'form-control' } %>
