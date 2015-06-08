@@ -18,9 +18,9 @@ class PinsController < ApplicationController
     @pin = current_user.pins.build(pin_params)
 
     if @pin.save
-      render json: true
-    else
-      render 'new'
+      respond_to do |format|
+        format.json { render :json => @pin }
+      end
     end
   end
 
@@ -29,9 +29,9 @@ class PinsController < ApplicationController
 
   def update
     if @pin.update(pin_params)
-      redirect_to @pin, notice: "Pin was successfully updated"
-    else
-      render 'edit'
+      respond_to do |format|
+        format.json { render :json => @pin }
+      end
     end
   end
 

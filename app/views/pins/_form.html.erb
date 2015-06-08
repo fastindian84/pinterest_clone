@@ -1,4 +1,4 @@
-<%= simple_form_for @pin, html: { multipart: true } do |f| %>
+<%= simple_form_for @pin, html: { multipart: true, data: {remote: true, type: :json} } do |f| %>
   <% if @pin.errors.any? %>
     <div id="errors">
       <h2>
@@ -22,7 +22,8 @@
                                                        name: 'image',
                                                        class: 'form-control file_input',
                                                        multiple: current_page?(action: 'new'),
-                                                       id: "#{'images_upload' if current_page?(action: 'new')}" } %>
+                                                       id: "images_upload" },
+																					data: { method: current_page?(action: 'new') ? "post" : "put" }%>
       </span>
     <h4>Preview</h4>
     <div id="images"></div>
@@ -37,5 +38,5 @@
   <div class="form-group">
     <%= f.input :price, input_html: { class: 'form-control' } %>
   </div>
-  <%= f.button :submit, class: "btn btn-primary", id: "#{'submit_pin' if current_page?(action: 'new')}"  %>
+  <%= f.button :submit, class: "btn btn-primary", id: "#{current_page?(action: 'new') ? 'submit_pin': 'edit_pin'}"  %>
 <% end %>

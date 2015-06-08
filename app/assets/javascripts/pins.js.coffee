@@ -11,20 +11,27 @@ $(document).on "ready page:load", ->
   file_upload = $('#images_upload')
   forms = []
   file_upload.fileupload
-    url: '/pins'
     autoUpload: false
     dataType: 'json'
-    type: 'POST'
+    type: @method
     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
     sequentialUploads: true
     limitMultiFileUploads: 6
     previewMaxWidth: 100
     previewMaxHeight: 100
     add: (e, data) ->
+      isNew = $(this).parents("form")[0].id is "new_pin"
+
+      if !isNew && forms.length >= 1
+        return false
+
       forms.push(data)
+
+      $(".fileinput-button").attr("disabled", true) if !isNew
 
       context = $('<div/>').appendTo('#images');
       file = data.files[0]
+      forms.push(data)
 
       reader = new FileReader()
       reader.readAsDataURL(file)
@@ -40,8 +47,10 @@ $(document).on "ready page:load", ->
         removeBtn.className = "glyphicon glyphicon-remove"
         removeBtn.style.margin = "10px"
         removeBtn.onclick = ->
-          index = forms.indexOf(@file)
-          forms.splice(index, 1)
+          $(".fileinput-button").attr("disabled", false)
+          i = forms.indexOf(@file)
+          forms = _.reject forms, (file) ->
+            return file is removeBtn.file
           @parentElement.outerHTML = ""
         span = $('<span/>')
         span.text(file.name)
@@ -54,6 +63,11 @@ $(document).on "ready page:load", ->
     promises = forms.map (form)-> form.submit()
     $.when.apply($, promises).then ->
       window.location.href = "/"
+    false
+
+  $("#edit_pin").click ->
+    forms[0].submit().then (response)->
+      window.location.href = "/pins/#{response.id}"
     false
 
 
