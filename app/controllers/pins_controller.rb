@@ -48,7 +48,7 @@ class PinsController < ApplicationController
 
   private
   def pin_params
-    _params = params.require(:pin).permit(:title, :description, :price)
+    _params = params.require(:pin).permit(:title, :description, :price, :address, :latitude, :longitude)
 		if params[:image].present?
     	_params.merge!(image: params[:image])
 		end

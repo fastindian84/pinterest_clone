@@ -4,7 +4,9 @@
     <title>Favpost</title>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-    <%= csrf_meta_tags %>
+		<%= javascript_include_tag "//maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places",'data-turbolinks-track' => true   %>
+
+		<%= csrf_meta_tags %>
   </head>
   <body>
     <nav class="navbar navbar-default">
@@ -44,6 +46,7 @@
         <%= content_tag :div, msg, class: "alert alert-info" %>
       <% end %>
       <%= yield %>
-    </div>
+
+		</div>
   </body>
 </html>
