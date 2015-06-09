@@ -7,6 +7,7 @@ $(document).on "ready page:load", ->
     $('#pins').masonry
       itemSelector: '.box'
       isFitWidth: true
+  window.settedMarker = null
 
   file_upload = $('#images_upload')
   forms = []
@@ -75,20 +76,24 @@ $(document).on "ready page:load", ->
 
     false
 
-  initialize()
+  $("form").on "keypress", (e) ->
+    return false if (e.keyCode == 13)
+
+  initializeGoogleMaps()
 
 
 
 
 
-initialize = ->
+initializeGoogleMaps = ->
 
   map = setupMap()
 
   input = document.getElementById('address')
   # Sets a listener on a radio button to change the filter type on Places
   # Autocomplete.
-
+  return unless input
+  return unless map
   autocomplete = new (google.maps.places.Autocomplete)(input)
   autocomplete.bindTo 'bounds', map
   infowindow = new (google.maps.InfoWindow)
@@ -96,6 +101,7 @@ initialize = ->
     map: map
     anchorPoint: new (google.maps.Point)(0, -29))
   google.maps.event.addListener autocomplete, 'place_changed', ->
+    settedMarker.setMap(null) if settedMarker
     infowindow.close()
     marker.setVisible false
     place = autocomplete.getPlace()
@@ -108,16 +114,10 @@ initialize = ->
       map.fitBounds place.geometry.viewport
     else
       map.setCenter place.geometry.location
-      map.setZoom 17
-    # Why 17? Because it looks good.
-    marker.setIcon
-      url: place.icon
-      size: new (google.maps.Size)(71, 71)
-      origin: new (google.maps.Point)(0, 0)
-      anchor: new (google.maps.Point)(17, 34)
-      scaledSize: new (google.maps.Size)(35, 35)
+      map.setZoom 15
     marker.setPosition place.geometry.location
     marker.setVisible true
+
     address = ''
     if place.address_components
       address = [
@@ -132,27 +132,38 @@ initialize = ->
 
 setupMap = ->
   mapPlaceholder = document.getElementById('map-canvas')
+  return null unless mapPlaceholder
   location = getStartPosition()
+  position = new google.maps.LatLng(location.lat, location.long)
   mapOptions =
-    center: new (google.maps.LatLng)(location.lat, location.long)
-    zoom: 13
+    center: position
+    zoom: 15
+
   map = new (google.maps.Map)(document.getElementById('map-canvas'), mapOptions)
+  setMarker(map)
+  map
 
-
-
+setMarker = (map) ->
+  location = getStartPosition()
+  return unless location.fromDataSet
+  marker = new google.maps.Marker()
+  position = new google.maps.LatLng(location.lat, location.long)
+  marker.setMap(map)
+  marker.setPosition(position)
+  window.settedMarker = marker
 
 getStartPosition = ->
   mapPlaceholder = document.getElementById('map-canvas')
-  location = {
-    lat: -33.8688,
-    long: 151.2195
-  }
+  location =
+    lat:  35.6894875
+    long: 139.69170639999993
+    fromDataSet: false
+
   if mapPlaceholder.dataset.longtitude && mapPlaceholder.dataset.latitude
     location.long = parseFloat(mapPlaceholder.dataset.longtitude)
     location.lat = parseFloat(mapPlaceholder.dataset.latitude)
+    location.fromDataSet = true
   location
-
-
 
 assign_coordinates = (place)->
   $("#pin_longitude").val(place.geometry.location.lng())
