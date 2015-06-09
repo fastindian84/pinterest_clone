@@ -30,6 +30,7 @@ class PinsController < ApplicationController
   def update
     if @pin.update(pin_params)
       respond_to do |format|
+				format.html {redirect_to @pin }
         format.json { render :json => @pin }
       end
     end
@@ -48,7 +49,9 @@ class PinsController < ApplicationController
   private
   def pin_params
     _params = params.require(:pin).permit(:title, :description, :price)
-    _params.merge!(image: params[:image])
+		if params[:image].present?
+    	_params.merge!(image: params[:image])
+		end
     _params
   end
 

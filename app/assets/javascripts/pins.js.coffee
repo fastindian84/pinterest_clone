@@ -66,8 +66,13 @@ $(document).on "ready page:load", ->
     false
 
   $("#edit_pin").click ->
-    forms[0].submit().then (response)->
-      window.location.href = "/pins/#{response.id}"
+    if forms.length
+      forms[0].submit().then (response)->
+        window.location.href = "/pins/#{response.id}"
+    else
+      @form.submit()
+
+
     false
 
 
