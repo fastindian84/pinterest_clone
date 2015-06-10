@@ -1,9 +1,11 @@
 <div class="row" id="pin_show">
   <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-      <div class="panel-heading pin_image">
-        <%= image_tag @pin.image.url %>
-      </div>
+			<% @pin.images.each do |picture| %>
+				<div class="panel-heading pin_image">
+					<%= image_tag picture.preview %>
+				</div>
+			<% end %>
       <div class="panel-body">
         <div class="btn-group pull-right">
           <%= link_to like_pin_path(@pin), method: :put, class: "btn btn-default" do %>

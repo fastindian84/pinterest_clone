@@ -14,21 +14,15 @@ $(document).on "ready page:load", ->
   file_upload.fileupload
     autoUpload: false
     dataType: 'json'
-    type: @method
+    type: 'post'
+    url: '/images'
     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
     sequentialUploads: true
     limitMultiFileUploads: 6
     previewMaxWidth: 100
     previewMaxHeight: 100
     add: (e, data) ->
-      isNew = $(this).parents("form")[0].id is "new_pin"
-
-      if !isNew && forms.length >= 1
-        return false
-
       forms.push(data)
-
-      $(".fileinput-button").attr("disabled", true) if !isNew
 
       context = $('<div/>').appendTo('#images');
       file = data.files[0]
@@ -61,23 +55,30 @@ $(document).on "ready page:load", ->
 
 
   $("#submit_pin").click ->
-    promises = forms.map (form)-> form.submit()
-    $.when.apply($, promises).then ->
-      window.location.href = "/"
-    false
-
-  $("#edit_pin").click ->
-    if forms.length
-      forms[0].submit().then (response)->
+    data = $(this.form).serialize()
+    pinRequest = $.ajax
+      type: @form.method
+      url: @form.action
+      dataType: 'json'
+      data: data
+    pinRequest.then (response) ->
+      images = forms.map (form)->
+        form.formData = {pin_id: response.id }
+        form.submit()
+      $.when.apply($, images).then ->
         window.location.href = "/pins/#{response.id}"
-    else
-      @form.submit()
-
-
     false
 
   $("form").on "keypress", (e) ->
     return false if (e.keyCode == 13)
+
+  $(".remove-image").click ->
+    parent = @parentElement
+    $.ajax
+      url: "/images/#{this.dataset.imageId}"
+      type: 'DELETE'
+      success: ->
+        parent.outerHTML = ""
 
   initializeGoogleMaps()
 

@@ -21,10 +21,10 @@
     <span class="btn btn-success fileinput-button">
         <i class="glyphicon glyphicon-plus"></i>
         <span>Add files...</span>
-        <%= f.input :image, label: false, input_html: {type: :file,
+        <%= f.input :images, label: false, input_html: {type: :file,
                                                        name: 'image',
                                                        class: 'form-control file_input',
-                                                       multiple: current_page?(action: 'new'),
+                                                       multiple: true,
                                                        id: "images_upload" },
 																					data: { method: current_page?(action: 'new') ? "post" : "put" }%>
       </span>
@@ -52,5 +52,5 @@
   </div>
 
 
-  <%= f.button :submit, class: "btn btn-primary", id: "#{current_page?(action: 'new') ? 'submit_pin': 'edit_pin'}"  %>
+  <%= f.button :submit, class: "btn btn-primary", id: "submit_pin"  %>
 <% end %>

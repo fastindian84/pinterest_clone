@@ -13,3 +13,12 @@
   margin: 0;
   opacity: 0;
 }
+
+.preview{
+  img{
+    width: 60px;
+    height: 40px;
+    margin: 5px;
+    display: inline-block !important;
+  }
+}

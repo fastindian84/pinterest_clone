@@ -1,8 +1,11 @@
 class Pin < ActiveRecord::Base
   acts_as_votable
   acts_as_commontable
-  belongs_to :user
 
-  has_attached_file :image, :styles => { :medium => "300x300>" }
-  validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
+  belongs_to :user
+  has_many :images, as: :attachable_image, dependent: :destroy, class_name: "Picture"
+
+  def preview
+    images.first.image.url
+  end
 end

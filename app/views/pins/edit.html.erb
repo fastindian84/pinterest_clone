@@ -6,8 +6,13 @@
       </div>
       <div class="panel-body">
         <div class="current_image">
-          <strong class="center">Current Image</strong>
-          <%= image_tag @pin.image.url(:medium) %>
+
+					<% @pin.images.each do |picture| %>
+						<div class="preview">
+							<%= image_tag picture.preview %>
+							<i class="glyphicon glyphicon-remove remove-image" data-image-id="<%= picture.id %>"></i>
+						</div>
+					<% end %>
         </div>
         <%= render 'form' %>
       </div>
